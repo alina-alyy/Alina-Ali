@@ -1,0 +1,308 @@
+<div class="grid-container">
+  <h1>Tisso vison in the wild</h1>
+  <div class="product-grid">
+    {%- for product in section.settings.collection.products -%}
+      {% for option in product.options_with_values %}
+        {% if option.name == 'Color' %}
+          {%- assign colors = option.values | join: ', ' -%}
+        {% endif %}
+      {% endfor %}
+      {% for option in product.options_with_values %}
+        {% if option.name == 'Size' %}
+          {%- assign sizes = option.values | join: ', ' -%}
+        {% endif %}
+      {% endfor %}
+
+      <img
+        class="product-image"
+        src="{{ product.featured_image | img_url: '450x450' }}"
+        alt="{{ product.title }}"
+        data-id="{{ product.id }}"
+        data-price="{{ product.price | money}}"
+        data-desc="{{ product.description| strip_html}}"
+        data-color="{{colors}}"
+        data-size="{{ sizes }}"
+        data-variants='{
+          {%for variant in product.variants %}
+          "{{ variant.options | join: '/' }}": "{{ variant.id }}"{% unless forloop.last %},{% endunless %}
+          {% endfor %}
+          }'
+        height="450px"
+        width="450px"
+      >
+    {%- endfor -%}
+  </div>
+</div>
+<div id="product-modal" style="display:none;">
+  <div class="modal-content">
+    <span class="modal-close">&times;</span>
+    <div class="modal-desc">
+      <img
+        height="160px"
+        width="160px"
+        class="modal-image"
+      >
+      <div class="details">
+        <h2 class="modal-title"></h2>
+        <p class="modal-price"></p>
+        <p class="modal-description"></p>
+      </div>
+    </div>
+    <h2 class="modal-heading">Color</h2>
+    <div class="selector">
+      <div id="color-option1" class="option  "></div>
+      <div id="color-option2" class="option"></div>
+    </div>
+
+    <h2 class="modal-heading">Size</h2>
+    <select id="size-selector">
+      <option value="" disabled selected>Choose your size</option>
+    </select>
+    <form
+      id="cart-form"
+      action="/cart/add"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input
+        id="modal-addcart"
+        type="hidden"
+        name="id"
+        value="{{ 1 }}"
+      >
+      <button
+        type="submit"
+        value="Add to Cart"
+        class="add-cart-btn"
+      >
+        ADD TO CART
+        <svg
+          class="btn-arrow"
+          xmlns="http://www.w3.org/2000/svg"
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+        >
+          <path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" />
+        </svg>
+      </button>
+    </form>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "grid",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "hello"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Default grid"
+    }
+  ]
+}
+{% endschema %}
+
+{% style %}
+  .grid-container {
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 50px;
+    font-size: 36px;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  #product-modal {
+    display: none;
+    /* Initially hidden */
+    position: fixed;
+    /* Fixed to viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Dark semi-transparent background */
+    z-index: 1000;
+    /* Ensure it appears above other elements */
+  }
+
+  .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Center the modal */
+    background-color: white;
+    padding: 20px;
+    min-height: 450px;
+    width: 420px;
+    max-width: 90%;
+    /* Make it responsive */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .modal-content {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .modal-title {
+    font-size: 16px;
+    font-weight: 300;
+    text-align: start;
+  }
+
+  .modal-desc {
+    display: flex;
+    align-items: center;
+    padding-top: 20px;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .modal-heading {
+    font-size: 14px;
+    text-align: start;
+    color: #333333;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    align-items: flex-start;
+  }
+
+  .details p {
+    margin-top: 0;
+    margin-bottom: 3px;
+    padding-bottom: 0;
+    padding-top: 0;
+    font-size: 14px;
+    text-align: start;
+  }
+
+  .color-option-container {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+    border: 1px solid #000000;
+    width: 100%;
+    min-height: 40px;
+  }
+
+  .color-option {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    cursor: pointer;
+  }
+
+  .color-option:hover {
+    border-color: #000;
+  }
+
+  .color-name {
+    flex: 1;
+  }
+
+  .color-line {
+    min-width: 5px;
+    height: 100%;
+    background-color: #000000;
+  }
+
+  #size-selector {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .add-cart-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    font-size: 16px;
+    background-color: #000000;
+    padding: 10px 15px;
+    border: none;
+    transition: all ease 0.8s;
+    color: #ffffff;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .add-cart-btn .btn-arrow {
+    fill: #ffffff;
+  }
+  /* Container for the selector */
+  .selector {
+    display: flex;
+    border: 2px solid black; /* Main border */
+    overflow: hidden; /* To clip border edges */
+    width: 100%; /* Adjust width based on content */
+  }
+
+  /* Each option */
+  .option {
+    flex: 1; /* Equal width for all options */
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* Default background and border */
+  .option {
+    background: white;
+    color: black;
+  }
+
+  /* Selected option */
+  .option.selected {
+    background: black;
+    color: white;
+  }
+
+  /* Add a hover effect for better UX */
+  .option:hover:not(.selected) {
+    background: lightgray;
+  }
+
+  @media screen and (max-width: 768px) {
+    .grid-container {
+      /* display: none; */
+      padding-left: 15px;
+      padding-right: 15px;
+      padding-bottom: 24px;
+    }
+
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .product-image {
+      width: 180px;
+      height: 180px;
+    }
+  }
+{% endstyle %}

@@ -1,0 +1,196 @@
+<section class="banner-section">
+
+  <img
+    class="upper-banner"
+    src="{{ 'upper-banner.png' | asset_url }}"
+    alt="Upper Banner" />
+
+  <div class="container">
+    <div class="banner-content">
+      <h1>{{ section.settings.text }}</h1>
+      <p class="desktop-banner-para">{{ section.settings.paragraph }}</p>
+      <p class="mobile-banner-para">Discover Joy: Your Ultimate Holiday Gift Destination.</p>
+      <button class="banner-btn desktop-only">{{ section.settings.button }}
+        <svg
+          class="btn-arrow"
+          xmlns="http://www.w3.org/2000/svg"
+          fill-rule="evenodd"
+          clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+      </button>
+      <div class="mobile-banner-container">
+        <img
+          class="mobile-banner-img"
+          src="{{ 'mobile-banner.png' | asset_url }}"
+          alt="Mobile Banner" />
+        <button class="banner-btn mobile-only">{{ section.settings.button }}
+          <svg
+            class="btn-arrow"
+            xmlns="http://www.w3.org/2000/svg"
+            fill-rule="evenodd"
+            clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
+        </button>
+      </div>
+    </div>
+
+    <img
+      class="lower-banner"
+      src="{{ 'lower-banner.png' | asset_url }}"
+      alt="lower Banner" />
+  </div>
+
+  <p class="below-tag desktop-only">{{ section.settings.end }}</p>
+  <p class="below-tag mobile-only">{{ section.settings.mobile-end }}</p>
+
+</section>
+
+{% schema %}
+  {
+    "name": "banner",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text",
+        "default": "The Gift Guide"
+      },
+      {
+        "type": "text",
+        "id": "paragraph",
+        "label": "Paragraph",
+        "default": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season."
+      },
+      {
+        "type": "text",
+        "id": "button",
+        "label": "Button",
+        "default": "Shop Now"
+      },
+      {
+        "type": "text",
+        "id": "end",
+        "label": "End",
+        "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+      }, {
+        "type": "text",
+        "id": "mobile-end",
+        "label": "End",
+        "default": "SUSTAINABLE, ETHICALLY MADE ACTIVEWEAR"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Default banner"
+      }
+    ],
+    "limit": 1
+  }
+{% endschema %}
+
+{% style %}
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+  }
+
+  .banner-content {
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+    padding-left: 50px;
+  }
+
+  .below-tag {
+    background-color: #F5F5F5;
+    text-align: center;
+  }
+
+  .banner-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000000;
+    color: #FFFFFF;
+    padding: 12px 10px;
+    width: 200px;
+    border: none;
+    transition: all ease 0.8s;
+    box-shadow: inset 0 0 0 0 #31302B;
+  }
+  .banner-btn:hover {
+    box-shadow: inset 200px 0 0 0 #FFF544;
+    color: #000000
+  }
+  .banner-btn .btn-arrow {
+
+    fill: #FFFFFF;
+  }
+  .banner-btn:hover .btn-arrow {
+    fill: #000000;
+  }
+
+  /* Desktop */
+
+  @media screen and (min-width: 769px) {
+    .mobile-banner-container,
+    .mobile-only {
+      display: none;
+    }
+
+  }
+
+  /* Mobile */
+  @media screen and (max-width: 768px) {
+    .desktop-only,
+    .upper-banner,
+    .lower-banner,
+    .desktop-banner-para {
+      display: none;
+    }
+
+    .banner-content {
+      margin-top: 36px;
+      width: 100%;
+      padding-left: 0;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .banner-content h1 {
+      font-weight: 500;
+      font-size: 30px;
+    }
+
+    .mobile-banner-para {
+      font-size: 16px;
+    }
+
+    .mobile-banner-img {
+      width: 100%;
+      max-width: 100%;
+      min-height: 300px;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .mobile-banner-container {
+      position: relative;
+    }
+
+    .mobile-banner-container button {
+      position: absolute;
+      top: 80%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+    }
+
+    .below-tag .mobile-only {
+      font-weight: 400;
+    }
+
+  }
+
+{% endstyle %}
