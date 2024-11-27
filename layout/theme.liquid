@@ -1,5 +1,12 @@
 <!doctype html>
 <html class="js" lang="{{ request.locale.iso_code }}">
+  <style> 
+    @font-face {
+      font-family: 'Jost';
+      src: url('{{ 'Jost.woff2' | asset_url }}');
+    }
+  </style> 
+
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,7 +41,7 @@
     <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'details-modal.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
-
+    <script src="{{ 'add-to-cart.js' | asset_url }}" defer="defer"></script>
     {%- if settings.animations_reveal_on_scroll -%}
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
@@ -229,6 +236,7 @@
       }
 
       html {
+        font-family: 'Jost' !important;
         box-sizing: border-box;
         font-size: calc(var(--font-body-scale) * 62.5%);
         height: 100%;
@@ -247,6 +255,15 @@
         font-style: var(--font-body-style);
         font-weight: var(--font-body-weight);
       }
+
+      .btn-arrow {
+        margin-left: 8px;
+        height: 24px;
+        width: 24px;
+        fill: #FFFFFF;
+      }
+
+   
 
       @media screen and (min-width: 750px) {
         body {
@@ -307,13 +324,15 @@
       {%- render 'cart-drawer' -%}
     {%- endif -%}
 
-    {% sections 'header-group' %}
+    {% section 'header' %}
+   
+
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>
-
-    {% sections 'footer-group' %}
+{% comment %} 
+    {% sections 'footer-group' %} {% endcomment %}
 
     <ul hidden>
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
